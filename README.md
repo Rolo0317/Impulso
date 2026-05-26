@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Impulso Vivienda
 
 Base profesional para una plataforma inmobiliaria inteligente: web publica, CRM, IA de clasificacion de leads y API modular.
@@ -18,3 +19,6 @@ npm run dev
 ```
 
 La web queda disponible en `http://localhost:3000`.
+=======
+# Impulso
+>>>>>>> 84f1675e8f7d70ac947486011e5d8a18e309438f
