@@ -1,0 +1,132 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum PropertyStatus {
+  AVAILABLE
+  RESERVED
+  NEGOTIATION
+  SOLD
+}
+
+enum LeadTemperature {
+  HOT
+  WARM
+  COLD
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  role      String   @default("advisor")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Client {
+  id        String   @id @default(cuid())
+  name      String
+  phone     String
+  email     String?
+  leads     Lead[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Lead {
+  id               String          @id @default(cuid())
+  clientId         String?
+  client           Client?         @relation(fields: [clientId], references: [id])
+  source           String          @default("web")
+  budgetRange      String
+  purchaseTimeline String
+  score            Int             @default(0)
+  temperature      LeadTemperature @default(COLD)
+  notes            String?
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+}
+
+model Property {
+  id        String            @id @default(cuid())
+  title     String
+  slug      String            @unique
+  city      String
+  price     Int
+  bedrooms  Int
+  bathrooms Int
+  area      Int
+  status    PropertyStatus    @default(AVAILABLE)
+  histories PropertyHistory[]
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+}
+
+model Inmueble {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  titulo        String
+  descripcion   String
+  tipo          String
+  estado        String
+  precio        Float
+  precioDeuda   Float?
+  cuotaMensual  Float?
+  plazoAnios    Int?
+  entregaCon    Float?
+  habitaciones  Int
+  banos         Int
+  area          Float
+  piso          Int?
+  ciudad        String
+  barrio        String
+  direccion     String?
+  imagenes      String[]
+  amenidades    String[]
+  financiacion  Boolean  @default(false)
+  subsidio      String?
+  creadoEn      DateTime @default(now())
+  actualizadoEn DateTime @updatedAt
+}
+
+model PropertyHistory {
+  id         String   @id @default(cuid())
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id])
+  status     String
+  price      Int?
+  note       String?
+  createdAt  DateTime @default(now())
+}
+
+model Visit {
+  id          String   @id @default(cuid())
+  leadId      String
+  propertyId  String
+  scheduledAt DateTime
+  status      String   @default("scheduled")
+  createdAt   DateTime @default(now())
+}
+
+model Document {
+  id        String   @id @default(cuid())
+  ownerId   String
+  ownerType String
+  url       String
+  type      String
+  createdAt DateTime @default(now())
+}
+
+model AiConversation {
+  id        String   @id @default(cuid())
+  leadId    String
+  summary   String
+  signals   Json
+  createdAt DateTime @default(now())
+}
