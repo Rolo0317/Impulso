@@ -1,74 +1,64 @@
 "use client";
 
 import type { PropertyImage } from "@impulso/types";
-import { X } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
+import Lightbox from "yet-another-react-lightbox";
+import "yet-another-react-lightbox/styles.css";
 
 export function PropertyGallery({ images, title }: { images: PropertyImage[]; title: string }) {
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const activeImage = activeIndex === null ? null : images[activeIndex];
+  const [open, setOpen] = useState(false);
+  const [index, setIndex] = useState(0);
+  const slides = images.map((image) => ({ src: image.src }));
+
+  function openAt(nextIndex: number) {
+    setIndex(nextIndex);
+    setOpen(true);
+  }
 
   return (
     <>
-      <div className="grid gap-3 lg:grid-cols-[1.45fr_1fr]">
-        <GalleryButton image={images[0]} title={title} priority onClick={() => setActiveIndex(0)} className="aspect-[4/3] lg:aspect-auto" />
-        <div className="grid grid-cols-2 gap-3">
-          {images.slice(1, 5).map((image, index) => (
-            <GalleryButton key={image.src} image={image} title={title} onClick={() => setActiveIndex(index + 1)} className="aspect-square" />
-          ))}
-        </div>
-      </div>
-      {activeImage ? (
-        <div className="fixed inset-0 z-[80] flex items-center justify-center bg-brand-ink/92 p-4" role="dialog" aria-modal="true">
-          <button
-            type="button"
-            aria-label="Cerrar galeria"
-            onClick={() => setActiveIndex(null)}
-            className="absolute right-4 top-4 inline-flex h-11 w-11 items-center justify-center rounded-full bg-white text-brand-ink"
-          >
-            <X size={20} />
-          </button>
+      <div className="grid h-[320px] grid-cols-2 gap-2 overflow-hidden rounded-3xl sm:h-[420px] lg:h-[480px] lg:grid-cols-4 lg:grid-rows-2">
+        <button type="button" className="group relative col-span-2 row-span-2 cursor-pointer overflow-hidden" onClick={() => openAt(0)}>
           <Image
-            src={activeImage.src}
-            alt={activeImage.alt}
-            width={activeImage.width}
-            height={activeImage.height}
+            src={images[0].src}
+            alt={`${title} - foto principal`}
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            priority
+            quality={90}
             placeholder="blur"
-            blurDataURL={activeImage.blurDataURL}
-            className="max-h-[86vh] w-auto rounded-[8px] object-contain"
+            blurDataURL={images[0].blurDataURL}
           />
-        </div>
-      ) : null}
+          <div className="absolute inset-0 bg-black/0 transition-all duration-300 group-hover:bg-black/10" />
+        </button>
+        {images.slice(1, 5).map((image, imageIndex) => (
+          <button key={image.src} type="button" className="group relative hidden cursor-pointer overflow-hidden lg:block" onClick={() => openAt(imageIndex + 1)}>
+            <Image
+              src={image.src}
+              alt={`${title} - foto ${imageIndex + 2}`}
+              fill
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              quality={75}
+              placeholder="blur"
+              blurDataURL={image.blurDataURL}
+            />
+            {imageIndex === 3 && images.length > 5 ? (
+              <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+                <span className="text-sm font-semibold text-white">+{images.length - 5} fotos</span>
+              </div>
+            ) : null}
+          </button>
+        ))}
+      </div>
+      <button
+        type="button"
+        onClick={() => openAt(0)}
+        className="mt-3 text-sm font-semibold text-brand-blue underline underline-offset-4 transition-colors hover:text-brand-gold"
+      >
+        Ver las {images.length} fotos
+      </button>
+      <Lightbox open={open} close={() => setOpen(false)} index={index} slides={slides} />
     </>
-  );
-}
-
-function GalleryButton({
-  image,
-  title,
-  priority = false,
-  className,
-  onClick
-}: {
-  image: PropertyImage;
-  title: string;
-  priority?: boolean;
-  className?: string;
-  onClick: () => void;
-}) {
-  return (
-    <button type="button" onClick={onClick} className={`relative overflow-hidden rounded-[8px] bg-brand-mist ${className ?? ""}`}>
-      <Image
-        src={image.src}
-        alt={`${title}: ${image.alt}`}
-        fill
-        sizes="(min-width: 1024px) 50vw, 100vw"
-        priority={priority}
-        placeholder="blur"
-        blurDataURL={image.blurDataURL}
-        className="object-cover transition duration-500 hover:scale-105"
-      />
-    </button>
   );
 }

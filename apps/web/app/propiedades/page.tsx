@@ -20,7 +20,7 @@ export default function PropertiesPage() {
             <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-gold">Inventario</p>
             <h1 className="mt-3 font-serif text-4xl font-black text-brand-ink sm:text-5xl">Propiedades disponibles</h1>
             <p className="mt-4 max-w-2xl leading-8 text-brand-ink/66">
-              Inmuebles con informacion financiera clara para decidir con confianza antes de agendar una visita.
+              Inmuebles con información financiera clara para decidir con confianza antes de agendar una visita.
             </p>
           </div>
           <div className="flex flex-wrap gap-2">

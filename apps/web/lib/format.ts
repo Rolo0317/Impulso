@@ -1,3 +1,5 @@
+import { WHATSAPP_PRINCIPAL } from "@/lib/data";
+
 export function formatCOP(value: number) {
   return new Intl.NumberFormat("es-CO", {
     style: "currency",
@@ -7,7 +9,6 @@ export function formatCOP(value: number) {
   }).format(value);
 }
 
-export function getWhatsAppUrl(message: string) {
-  const phone = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "573001112233";
+export function getWhatsAppUrl(message: string, phone = process.env.NEXT_PUBLIC_WHATSAPP_ASESORA ?? WHATSAPP_PRINCIPAL) {
   return `https://wa.me/${phone.replace(/\D/g, "")}?text=${encodeURIComponent(message)}`;
 }

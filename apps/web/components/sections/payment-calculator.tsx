@@ -16,8 +16,8 @@ export function PaymentCalculator() {
           <Calculator size={20} />
         </span>
         <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-brand-gold">Calculadora rapida</p>
-          <h2 className="text-xl font-black text-brand-ink">Cuanto puedes pagar mensualmente</h2>
+          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-brand-gold">Calculadora rápida</p>
+          <h2 className="text-xl font-black text-brand-ink">Cuánto puedes pagar mensualmente</h2>
         </div>
       </div>
       <label className="mt-6 block text-sm font-semibold text-brand-ink" htmlFor="monthly-income">

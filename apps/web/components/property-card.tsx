@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 const statusLabel: Record<Property["status"], string> = {
   available: "Disponible",
   reserved: "Separado",
-  negotiation: "En negociacion",
+  negotiation: "En negociación",
   sold: "Vendido"
 };
 
@@ -41,7 +41,7 @@ export function PropertyCard({ property, priority = false }: { property: Propert
               {statusLabel[property.status]}
             </span>
             <span className="rounded-full bg-white/92 px-3 py-1 text-xs font-semibold text-brand-ink shadow-sm">
-              {property.area} m2
+              {property.area} m²
             </span>
           </div>
         </div>

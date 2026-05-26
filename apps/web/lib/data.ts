@@ -1,6 +1,16 @@
 import type { LeadTemperature, Property, PropertyImage } from "@impulso/types";
 import { Building2, CheckCircle2, Clock3, Handshake, ShieldCheck, Sparkles, TrendingUp } from "lucide-react";
 
+export const WHATSAPP_WILLIAM = "+573203914473";
+export const WHATSAPP_ASESORA = "+573229624123";
+export const NOMBRE_ASESORA = "Maria Carolina Solano";
+export const WHATSAPP_PRINCIPAL = WHATSAPP_ASESORA;
+
+export const msgPropiedad = (nombre: string, precio: string) =>
+  `Hola Maria Carolina, me interesa la propiedad: ${nombre} (${precio}). ¿Pueden darme más información?`;
+
+export const msgGeneral = "Hola Maria Carolina, quiero información sobre las propiedades disponibles de Impulso Vivienda.";
+
 const blurDataURL =
   "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMTYnIGhlaWdodD0nMTInIHZpZXdCb3g9JzAgMCAxNiAxMicgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJz48cmVjdCB3aWR0aD0nMTYnIGhlaWdodD0nMTInIGZpbGw9JyNmNWY3ZmEnLz48Y2lyY2xlIGN4PScxMicgY3k9JzMnIHI9JzQnIGZpbGw9JyNkNGE0MzcnIG9wYWNpdHk9Jy40Jy8+PHBhdGggZD0nTTAgMTJoMTZWN0wxMSA0IDYgOSAzIDYnIGZpbGw9JyMwYTJlNzMnIG9wYWNpdHk9Jy42Jy8+PC9zdmc+";
 
@@ -47,7 +57,7 @@ export const properties: Property[] = [
     slug: "la-macarena-maipore-soacha",
     title: "Conjunto La Macarena Maipore",
     description:
-      "Apartamento en primer piso ubicado en Maipore, Soacha. Una opcion clara para compra directa o cesion de deuda, con espacios funcionales, zona de ropa, cocina, sala comedor y acceso a zonas comunes.",
+      "Apartamento en primer piso ubicado en Maipore, Soacha. Una opción clara para compra directa o cesión de deuda, con espacios funcionales, zona de ropa, cocina, sala comedor y acceso a zonas comunes.",
     type: "apartamento",
     city: "Soacha",
     neighborhood: "Maipore",
@@ -61,13 +71,13 @@ export const properties: Property[] = [
     bathrooms: 1,
     area: 33,
     status: "available",
-    operation: "Venta directa o cesion de deuda",
-    agency: "INMORA Gestion Inmobiliaria S.A.S",
+    operation: "Venta directa o cesión de deuda",
+    agency: "INMORA Gestión Inmobiliaria S.A.S",
     subsidy: "COLSUBSIDIO",
     financing: true,
     amenities: ["Zona de ropa", "Sala comedor", "Cocina", "Salon social", "Parqueadero comunal"],
     images: macarenaImages,
-    tags: ["Solo efectivo", "Cesion de deuda", "Piso 1"]
+    tags: ["Solo efectivo", "Cesión de deuda", "Piso 1"]
   }
 ];
 
@@ -78,7 +88,7 @@ export function getPropertyBySlug(slug: string) {
 }
 
 export const trustStats = [
-  { value: "33 m2", label: "apartamento real disponible" },
+  { value: "33 m²", label: "apartamento real disponible" },
   { value: "$55M", label: "entrega inicial estimada" },
   { value: "$600K", label: "cuota mensual aproximada" }
 ];
@@ -86,17 +96,17 @@ export const trustStats = [
 export const valuePillars = [
   {
     icon: Handshake,
-    title: "Acompanamiento real",
+    title: "Acompañamiento real",
     description: "Te guiamos en deuda, documentos, condiciones y pasos para avanzar con tranquilidad."
   },
   {
     icon: ShieldCheck,
-    title: "Informacion transparente",
+    title: "Información transparente",
     description: "Precio, entrega, cuota, plazo y estado comercial visibles desde el primer contacto."
   },
   {
     icon: Sparkles,
-    title: "Tecnologia para convertir",
+    title: "Tecnología para convertir",
     description: "CRM, IA y automatizaciones priorizan leads y aceleran el seguimiento comercial."
   }
 ];
@@ -110,7 +120,7 @@ export const crmStages = [
 
 export const leadSignals: Array<{ label: string; value: LeadTemperature; score: string }> = [
   { label: "Puede entregar la inicial y compra este trimestre", value: "hot", score: "94" },
-  { label: "Tiene ingresos, esta revisando credito", value: "warm", score: "68" },
+  { label: "Tiene ingresos, está revisando crédito", value: "warm", score: "68" },
   { label: "Solo consulta valores sin fecha definida", value: "cold", score: "31" }
 ];
 
@@ -118,5 +128,5 @@ export const automationItems = [
   { icon: CheckCircle2, label: "WhatsApp conectado al pipeline" },
   { icon: Clock3, label: "Recordatorios por etapa comercial" },
   { icon: Building2, label: "Historial de inmuebles y precios" },
-  { icon: TrendingUp, label: "Scoring automatico por capacidad e intencion" }
+  { icon: TrendingUp, label: "Scoring automático por capacidad e intención" }
 ];

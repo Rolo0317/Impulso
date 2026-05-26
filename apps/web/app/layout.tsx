@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
-import { WhatsAppFloat } from "@/components/whatsapp-float";
+import { Footer } from "@/components/ui/footer";
+import { WhatsAppButton } from "@/components/ui/whatsapp-button";
 import "./globals.css";
+
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://impulso-web-one.vercel.app";
 
 export const metadata: Metadata = {
   title: {
@@ -8,13 +11,19 @@ export const metadata: Metadata = {
     template: "%s | Impulso Vivienda"
   },
   description:
-    "Plataforma inmobiliaria premium para comprar vivienda con acompanamiento, aprobacion, CRM e IA de clasificacion de leads.",
-  metadataBase: new URL("https://impulsovivienda.com"),
+    "Plataforma inmobiliaria premium para comprar vivienda con acompañamiento, aprobación, CRM e IA de clasificación de leads.",
+  metadataBase: new URL(BASE_URL),
   openGraph: {
     title: "Impulso Vivienda",
-    description: "Compra vivienda con asesoria experta, tecnologia y seguimiento inteligente.",
+    description: "Compra vivienda con asesoría experta, tecnología y seguimiento inteligente.",
     images: ["/Logo_inmobiliaria.png"],
     type: "website"
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Impulso Vivienda",
+    description: "Compra vivienda con asesoría experta, tecnología y seguimiento inteligente.",
+    images: ["/Logo_inmobiliaria.png"]
   }
 };
 
@@ -23,7 +32,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="es">
       <body>
         {children}
-        <WhatsAppFloat />
+        <Footer />
+        <WhatsAppButton />
       </body>
     </html>
   );

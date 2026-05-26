@@ -12,9 +12,11 @@
     "dev:web": "npm run dev --workspace=@impulso/web",
     "dev:api": "npm run start:dev --workspace=@impulso/api",
     "build": "npm run build --workspaces",
+    "build:web": "npm run build --workspace=@impulso/web",
     "lint": "npm run lint --workspaces",
     "typecheck": "npm run typecheck --workspaces"
   },
+  "packageManager": "npm@11.11.0",
   "engines": {
     "node": ">=20"
   }

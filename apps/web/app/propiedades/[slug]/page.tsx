@@ -6,12 +6,14 @@ import { Header } from "@/components/header";
 import { PropertyCard } from "@/components/property-card";
 import { PropertyGallery } from "@/components/property/property-gallery";
 import { Section } from "@/components/section";
-import { getPropertyBySlug, properties } from "@/lib/data";
+import { getPropertyBySlug, msgPropiedad, properties } from "@/lib/data";
 import { formatCOP, getWhatsAppUrl } from "@/lib/format";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
 };
+
+type PropertyDetail = NonNullable<ReturnType<typeof getPropertyBySlug>>;
 
 export function generateStaticParams() {
   return properties.map((property) => ({ slug: property.slug }));
@@ -29,7 +31,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     openGraph: {
       title: property.title,
       description: property.description,
-      images: [property.images[0].src]
+      images: ["/propiedades/la-macarena-maipore/foto-1.jpg"]
     }
   };
 }
@@ -40,7 +42,8 @@ export default async function PropertyDetailPage({ params }: PageProps) {
 
   if (!property) notFound();
 
-  const whatsappMessage = `Hola, me interesa la propiedad: ${property.title} (${formatCOP(property.price)}). Pueden darme mas informacion?`;
+  const similares = properties.filter((similar) => similar.slug !== slug);
+  const whatsappMessage = msgPropiedad(property.title, formatCOP(property.price));
 
   return (
     <main>
@@ -58,7 +61,7 @@ export default async function PropertyDetailPage({ params }: PageProps) {
             <p className="mt-5 text-3xl font-black text-brand-blue">{formatCOP(property.price)}</p>
             <KeyFacts property={property} />
             <section className="mt-8">
-              <h2 className="text-2xl font-black text-brand-ink">Descripcion</h2>
+              <h2 className="text-2xl font-black text-brand-ink">Descripción</h2>
               <p className="mt-4 max-w-3xl leading-8 text-brand-ink/68">{property.description}</p>
             </section>
             <section className="mt-8">
@@ -74,7 +77,7 @@ export default async function PropertyDetailPage({ params }: PageProps) {
             </section>
           </div>
           <aside className="h-fit rounded-[8px] border border-brand-blue/10 bg-white p-5 shadow-premium lg:sticky lg:top-24">
-            <h2 className="text-xl font-black text-brand-ink">Informacion financiera</h2>
+            <h2 className="text-xl font-black text-brand-ink">Información financiera</h2>
             <FinanceTable property={property} />
             <a href={getWhatsAppUrl(whatsappMessage)} target="_blank" rel="noreferrer">
               <Button className="mt-5 w-full">
@@ -85,23 +88,42 @@ export default async function PropertyDetailPage({ params }: PageProps) {
           </aside>
         </div>
       </Section>
-      <Section className="pt-0">
-        <h2 className="mb-5 text-2xl font-black text-brand-ink">Propiedades similares</h2>
-        <div className="grid gap-5 md:grid-cols-3">
-          {properties.map((similar) => (
-            <PropertyCard key={similar.id} property={similar} />
-          ))}
-        </div>
-      </Section>
+      {similares.length > 0 ? (
+        <Section className="pt-0">
+          <h2 className="mb-5 text-2xl font-black text-brand-ink">Propiedades similares</h2>
+          <div className="grid gap-5 md:grid-cols-3">
+            {similares.map((similar) => (
+              <PropertyCard key={similar.id} property={similar} />
+            ))}
+          </div>
+        </Section>
+      ) : (
+        <Section className="pt-0">
+          <div className="rounded-3xl bg-brand-mist p-8 text-center">
+            <h2 className="mb-3 text-xl font-semibold text-brand-blue">Próximamente más propiedades</h2>
+            <p className="mx-auto mb-6 max-w-2xl text-gray-600">
+              Estamos incorporando nuevos inmuebles. Déjanos tus datos y te avisamos cuando llegue algo que se ajuste a tu perfil.
+            </p>
+            <a
+              href={getWhatsAppUrl("Hola, quiero que me avisen cuando haya nuevas propiedades disponibles.")}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex rounded-2xl bg-brand-blue px-6 py-3 font-semibold text-white transition-all hover:bg-[#0d3a8a]"
+            >
+              Notificarme de nuevas propiedades
+            </a>
+          </div>
+        </Section>
+      )}
     </main>
   );
 }
 
-function KeyFacts({ property }: { property: NonNullable<ReturnType<typeof getPropertyBySlug>> }) {
+function KeyFacts({ property }: { property: PropertyDetail }) {
   const facts = [
     { icon: BedDouble, label: `${property.bedrooms} habitaciones` },
-    { icon: Bath, label: `${property.bathrooms} bano` },
-    { icon: Ruler, label: `${property.area} m2` },
+    { icon: Bath, label: `${property.bathrooms} baño` },
+    { icon: Ruler, label: `${property.area} m²` },
     { icon: Building2, label: property.type ?? "apartamento" }
   ];
 
@@ -117,14 +139,14 @@ function KeyFacts({ property }: { property: NonNullable<ReturnType<typeof getPro
   );
 }
 
-function FinanceTable({ property }: { property: NonNullable<ReturnType<typeof getPropertyBySlug>> }) {
+function FinanceTable({ property }: { property: PropertyDetail }) {
   const rows = [
-    ["Operacion", property.operation ?? "Venta"],
+    ["Operación", property.operation ?? "Venta"],
     ["Precio contado", formatCOP(property.price)],
     ["Entrega con", property.initialPayment ? formatCOP(property.initialPayment) : "Por confirmar"],
     ["Deuda restante", property.debtPrice ? formatCOP(property.debtPrice) : "No aplica"],
     ["Cuota mensual", property.monthlyPayment ? `${formatCOP(property.monthlyPayment)} / mes` : "Por confirmar"],
-    ["Plazo", property.termYears ? `${property.termYears} anos UVR` : "Por confirmar"],
+    ["Plazo", property.termYears ? `${property.termYears} años UVR` : "Por confirmar"],
     ["Subsidio", property.subsidy ?? "Por confirmar"]
   ];
 
@@ -138,7 +160,7 @@ function FinanceTable({ property }: { property: NonNullable<ReturnType<typeof ge
       ))}
       <p className="flex items-center gap-2 pt-4 text-sm font-semibold text-brand-teal">
         <CalendarClock size={17} />
-        Agenda visita y validacion documental.
+        Agenda visita y validación documental.
       </p>
     </div>
   );
