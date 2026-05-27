@@ -1,7 +1,7 @@
+import type { Route } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import type { Route } from "next";
-import { WHATSAPP_WILLIAM, msgGeneral } from "@/lib/data";
+import { WHATSAPP_ASESORA, WHATSAPP_WILLIAM, msgGeneral } from "@/lib/data";
 import { getWhatsAppUrl } from "@/lib/format";
 
 const whatsappIcon = (
@@ -34,7 +34,7 @@ export function Footer() {
           <div className="space-y-3 text-sm text-white/60">
             <p className="font-medium text-white">Maria Carolina Solano</p>
             <p>Asesora en compra de apartamentos</p>
-            <a href={getWhatsAppUrl(msgGeneral)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 font-medium text-brand-gold transition-colors hover:text-white">
+            <a href={getWhatsAppUrl(msgGeneral, WHATSAPP_ASESORA)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 font-medium text-brand-gold transition-colors hover:text-white">
               {whatsappIcon}
               +57 322 9624123
             </a>
@@ -47,7 +47,7 @@ export function Footer() {
             <p>Ingeniero de Software</p>
             <p className="text-xs leading-relaxed text-white/50">¿Quieres una plataforma como esta para tu negocio?</p>
             <a
-              href={getWhatsAppUrl("Hola William, vi Impulso Vivienda y quiero una página web similar para mi negocio.", process.env.NEXT_PUBLIC_WHATSAPP_WILLIAM ?? WHATSAPP_WILLIAM)}
+              href={getWhatsAppUrl("Hola William, vi Impulso Vivienda y quiero una página web similar para mi negocio.", WHATSAPP_WILLIAM)}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 font-medium text-brand-gold transition-colors hover:text-white"
